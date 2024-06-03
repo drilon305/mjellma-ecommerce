@@ -1,9 +1,11 @@
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
-export default function Home() {
+
+export default async function Home() {
   return (
-    <div>
+    <main>
       <h1>Mjellma</h1>
-    </div>
+      <Button>Click me</Button>
+    </main>
   );
 }
