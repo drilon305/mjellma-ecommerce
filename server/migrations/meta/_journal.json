@@ -15,6 +15,13 @@
       "when": 1717715427212,
       "tag": "0001_adorable_praxagora",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1718225138745,
+      "tag": "0002_wakeful_vengeance",
+      "breakpoints": true
     }
   ]
 }
