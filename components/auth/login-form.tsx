@@ -13,6 +13,7 @@ import { Link } from "lucide-react";
 import { emailSignIn } from "@/server/actions/email-signin";
 import { useAction } from "next-safe-action/hooks"
 import { cn } from "@/lib/utils";
+import { useState } from "react";
  
 
 export const LoginForm = () => {
@@ -24,7 +25,13 @@ export const LoginForm = () => {
     },
   });
 
-  const { execute, status } = useAction(emailSignIn, {});
+  const [error, setError] = useState('')
+
+  const { execute, status } = useAction(emailSignIn, {
+    onSuccess(data) {
+      console.log(data)
+    }
+  });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     execute(values)
