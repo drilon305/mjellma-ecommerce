@@ -47,3 +47,18 @@ export const users = pgTable("user", {
       }),
     })
   )
+
+ export const emailTokens = pgTable(
+  "email_tokens",
+  {
+    id:text("id").notNull(),
+    token: text("token").notNull(),
+    userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (vt) => ({
+    compoundKey: primaryKey({
+      columns: [vt.id, vt.token],
+    }),
+  })
+ )
