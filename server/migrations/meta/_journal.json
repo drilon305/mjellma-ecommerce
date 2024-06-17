@@ -36,6 +36,20 @@
       "when": 1718397862086,
       "tag": "0004_slow_gravity",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1718400009344,
+      "tag": "0005_peaceful_lilandra",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1718401431936,
+      "tag": "0006_round_mole_man",
+      "breakpoints": true
     }
   ]
 }
