@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm"
 import { users } from "../schema"
 import { db } from ".."
 import { generateEmailVerificationToken } from "./token"
+import { sendVerificationEmail } from "./email"
 
 const action = createSafeActionClient()
 
@@ -17,21 +18,32 @@ export const emailRegister = action(RegisterSchema, async ({email, name, passwor
         where: eq(users.email, email)
     })
 
-    if(existingUser) {
-        if(!existingUser.emailVerified) {
-            const verificationToken = await generateEmailVerificationToken(email);
-            await sendVerificationEmail()
+    if (existingUser) {
+      if (!existingUser.emailVerified) {
+        const verificationToken = await generateEmailVerificationToken(email);
+        await sendVerificationEmail(
+            verificationToken[0].email,
+          verificationToken[0].token,
+        );
 
-            return { success: 'Email Confirmation resent'}
-        }
-        return {error: 'Email already in use'}
+        return { success: "Email Confirmation resent" };
+      }
+      return { error: "Email already in use" };
     }
 
     await db.insert(users).values({
         email,
         name,
-        password:  hashedPassword
     })
+
+    const verificationToken = await generateEmailVerificationToken(email)
+   
+    await sendVerificationEmail(
+        verificationToken[0].email,
+        verificationToken[0].token,
+      )
+
+    return { success: 'Confirmation Email Sent!'}
 
 
 })
