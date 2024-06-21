@@ -20,6 +20,7 @@ import { FormError } from "./form-error";
 
 export const RegisterForm = () => {
     const form = useForm<z.infer<typeof RegisterSchema>>({
+      resolver: zodResolver(RegisterSchema),
       defaultValues: {
         email: "",
         password: "",
