@@ -36,11 +36,17 @@ export const EmailVerificationForm = () => {
         handleVerification()
     }, [])
 
-    return <AuthCard backButtonLabel='Back to login' backButtonHref='/auth/login' cardTitle='Verify your account.'>
-        <div className="flex items-center flex-col w-full justify-center ">
-            <p>{!success && !error ? 'Verifying email...' : null}</p>
+    return (
+        <AuthCard
+          backButtonLabel="Back to login"
+          backButtonHref="/auth/login"
+          cardTitle="Verify your account."
+        >
+          <div className="flex items-center flex-col w-full justify-center">
+            <p>{!success && !error ? "Verifying email..." : null}</p>
             <FormSuccess message={success} />
             <FormError message={error} />
-        </div>
-    </AuthCard>
-}
+          </div>
+        </AuthCard>
+      )
+    }
