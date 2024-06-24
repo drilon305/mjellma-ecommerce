@@ -1,5 +1,6 @@
 "use client"
 
+
 import { useForm } from "react-hook-form";
 import { Form,  FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { AuthCard } from "./auth-card"
@@ -19,13 +20,15 @@ import { ResetSchema } from "../../types/reset-schema";
 import { reset } from "../../server/actions/password-reset";
  
 
-export const ResetForm = () => {
-  const form = useForm<z.infer<typeof ResetSchema>({
-    resolver: zodResolver(ResetSchema),
-    defaultValues: {
-      email: "",
-    },
-  })
+
+
+  export default function ResetForm() {
+    const form = useForm<z.infer<typeof ResetSchema>>({
+      resolver: zodResolver(ResetSchema),
+      defaultValues: {
+        email: "",
+      },
+    })
 
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -76,7 +79,7 @@ export const ResetForm = () => {
               <FormSuccess message={success} />
               <FormError message={error} />
               <Button size={"sm"} variant={"link"} asChild>
-                <Link href="'/auth/reset">Forgot your password</Link>
+              <Link href="/auth/reset">Forgot your password</Link>
               </Button>
             </div>
             <Button type="submit" className={cn('w-full', status === 'executing' ? 'animate-pulse' : '')}>

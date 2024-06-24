@@ -60,7 +60,7 @@ export const newVerification = async (token: string) => {
     return { success: "Email Verified" }
   }
 
-  export const getPasswordResetByToken => async (token: string) => {
+  export const getPasswordResetByToken = async (token: string) => {
     try {
         const passwordResetToken = await db.query.passwordResetTokens.findFirst({
             where: eq(passwordResetTokens.token, token)
@@ -72,7 +72,7 @@ export const newVerification = async (token: string) => {
     }
   }
 
-  export const getPasswordResetByTokenByEmail => async (email: string) => {
+  export const getPasswordResetByTokenByEmail = async (email: string) => {
     try {
         const passwordResetToken = await db.query.passwordResetTokens.findFirst({
             where: eq(passwordResetTokens.email, email)

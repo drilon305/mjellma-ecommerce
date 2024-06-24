@@ -1,4 +1,5 @@
-'user server'
+"use server"
+
 
 import { createSafeActionClient } from 'next-safe-action'
 import { ResetSchema } from "../../types/reset-schema"
