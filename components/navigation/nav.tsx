@@ -3,7 +3,6 @@ import { UserButton } from './user-button';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { LogIn } from 'lucide-react';
-import Logo from './logo';
 
 export default async function Nav() {
   const session = await auth();
@@ -11,7 +10,7 @@ export default async function Nav() {
   return (
     <header className="py-8">
       <nav>
-        <ul className="flex justify-between">
+        <ul className="flex justify-between items-center">
           <li>
             <Link href={"/"}>
               <h2>Logo</h2>
