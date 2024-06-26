@@ -14,21 +14,21 @@ import {
   import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Image from "next/image"
 import { use } from "react"
-import { Moon, Settings, Sun, TruckIcon } from "lucide-react"
+import { LogOut, Moon, Settings, Sun, TruckIcon } from "lucide-react"
 
 
 
 export const UserButton = ({ user }: Session) => {
   if (user)
     return (
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
           <Avatar>
             {user.image && (
               <Image src={user.image} alt={user.name!} fill={true} />
             )}
             {!user.image && (
-              <AvatarFallback className="bg-primary/25">
+              <AvatarFallback className="bg-primary/10">
                 <div className="font-bold">
                   {user.name?.charAt(0).toUpperCase()}
                 </div>
@@ -53,11 +53,11 @@ export const UserButton = ({ user }: Session) => {
             </span>
           </div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="py-2 font-medium cursor-pointer transition-all duration-500">
-            <TruckIcon size={14} className=" mr-2" /> My Orders
+          <DropdownMenuItem className="group py-2 font-medium cursor-pointer transition-all duration-500">
+            <TruckIcon size={14} className="mr-3 group-hover:translate-x-1 transition-all duration-300 ease-in-out" /> My Orders
           </DropdownMenuItem>
-          <DropdownMenuItem className="py-2 font-medium cursor-pointer transition-all duration-500">
-            <Settings size={14} className=" mr-2" /> Settings
+          <DropdownMenuItem className="group py-2 font-medium cursor-pointer transition-all duration-500">
+            <Settings size={14} className="mr-3 group-hover:rotate-180 transition-all duration-300" /> Settings
           </DropdownMenuItem>
           <DropdownMenuItem className="py-2 font-medium cursor-pointer transition-all duration-500">
             <div className="flex items-center">
@@ -67,6 +67,12 @@ export const UserButton = ({ user }: Session) => {
                 Theme <span>theme</span>
               </p>
             </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => signOut()}
+            className="py-2 group focus:bg-destructive/50 font-medium cursor-pointer transition-all duration-500">
+
+           <LogOut size={14} className="mr-3 group-hover:scale-75 transition-all duration-300" /> Sign out
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
