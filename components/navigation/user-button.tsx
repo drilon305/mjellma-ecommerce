@@ -18,12 +18,14 @@ import Image from "next/image"
 import { use, useState } from "react"
 import { LogOut, Moon, Settings, Sun, TruckIcon } from "lucide-react"
 import { Switch } from '../ui/switch'
+import { useRouter } from "next/navigation"
 
 
 
 export const UserButton = ({ user }: Session) => {
   const {setTheme, theme} = useTheme();
   const [checked, setChecked] = useState(false)
+  const router = useRouter()
 
   function setSwitchState() {
     switch(theme) {
@@ -67,38 +69,59 @@ export const UserButton = ({ user }: Session) => {
             </span>
           </div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="group py-2 font-medium cursor-pointer transition-all duration-500 ease-in-out">
-            <TruckIcon size={14} className="mr-3 group-hover:translate-x-1 transition-all duration-300 ease-in-out" /> My Orders
+          <DropdownMenuItem onClick={() => router.push('/dashboard/orders')} className="group py-2 font-medium cursor-pointer">
+            <TruckIcon
+              size={14}
+              className="mr-3 group-hover:translate-x-1 transition-all duration-300 ease-in-out"
+            />{" "}
+            My Orders
           </DropdownMenuItem>
-          <DropdownMenuItem className="group py-2 font-medium cursor-pointer transition-all duration-500 ease-in-out">
-          <Settings size={14} className="mr-3 group-hover:rotate-180 transition-all duration-300" /> Settings
+          <DropdownMenuItem onClick={() => router.push('/dashboard/settings')} className="group py-2 font-medium cursor-pointer">
+            <Settings
+              size={14}
+              className="mr-3 group-hover:rotate-180 transition-all duration-300"
+            />{" "}
+            Settings
           </DropdownMenuItem>
-            {theme && (
-          <DropdownMenuItem className="py-2 font-medium cursor-pointer transition-all duration-500 ease-in-out">
-            <div className="flex items-center group">
-              <div className="relative flex">
-              <Sun className="group-hover:text-yellow-600 group-hover:rotate-180 dark:scale-0 dark:-rotate-90 transition-all duration-500 ease-in-out" size={14} />
-              <Moon className="group-hover:text-blue-400 dark:scale-100 scale-0" size={14} />  
+          {theme && (
+            <DropdownMenuItem
+              className="py-2 font-medium cursor-pointer"
+            >
+              <div onClick={(e) => e.stopPropagation()} className="flex items-center group">
+                <div className="relative flex mr-3">
+                  <Sun
+                    className="group-hover:text-yellow-600 absolute group-hover:rotate-180 dark:scale-0 dark:-rotate-90 transition-all duration-500 ease-in-out"
+                    size={14}
+                  />
+                  <Moon
+                    className="group-hover:text-blue-400 dark:scale-100 scale-0"
+                    size={14}
+                  />
+                </div>
+                <p className="dark:text-blue-400 text-secondary-foreground/75  text-yellow-600">
+                  {theme[0].toUpperCase() + theme?.slice(1)} Mode
+                </p>
+                <Switch
+                  className="scale-75 "
+                  checked={checked}
+                  onCheckedChange={(e) => {
+                    setChecked((prev) => !prev);
+                    if (e) setTheme("dark");
+                    if (!e) setTheme("light");
+                  }}
+                />
               </div>
-              <p className="dark:text-blue-400 text-secondary-foreground/75  text-xs font-bold text-yellow-600">
-                {theme[0].toUpperCase() + theme?.slice(1)}  Mode
-              </p>
-              <Switch 
-              className="scale-75 "
-              
-              checked={checked} onCheckedChange={(e) => {
-                setChecked((prev) => !prev)
-                if(e) setTheme('dark')
-                  if(!e) setTheme('light')
-              }} />
-            </div>
-          </DropdownMenuItem>   
-              )}
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             onClick={() => signOut()}
-            className="py-2 group focus:bg-destructive/50 font-medium cursor-pointer transition-all duration-500">
-
-           <LogOut size={14} className="mr-3 group-hover:scale-75 transition-all duration-300" /> Sign out
+            className="py-2 group focus:bg-destructive/50 font-medium cursor-pointer"
+          >
+            <LogOut
+              size={14}
+              className="mr-3 group-hover:scale-75 transition-all duration-300"
+            />{" "}
+            Sign out
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
