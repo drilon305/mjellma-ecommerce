@@ -24,6 +24,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { SettingsSchema } from "@/types/settings-schema"
 import { ExecuteResultSync } from "drizzle-orm/sqlite-core"
+import Image from "next/image"
+import { Switch } from "@/components/ui/switch"
+import { FormError } from "@/components/auth/form-error"
+import { FormSuccess } from "@/components/auth/form-success"
+import { useState } from "react"
   
 type SettingsForm = {
     session: Session
@@ -31,6 +36,11 @@ type SettingsForm = {
 
 
 export default function SettingsCard(session: SettingsForm) {
+    const [error, setError] = useState<string | null>(null)
+    const [success, setSuccess] = useState<string | null>(null)
+    const [avatarUploading, setAvatarUploading] = useState(false)
+
+
    const form = useForm<z.infer<typeof SettingsSchema>>({
     defaultValues: {
         password: undefined,
@@ -67,9 +77,6 @@ export default function SettingsCard(session: SettingsForm) {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -104,14 +111,64 @@ export default function SettingsCard(session: SettingsForm) {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
+                 
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+             <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="********"
+                      disabled={status === "executing"}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+              <FormField
+              control={form.control}
+              name="newPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>New Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="********"
+                      disabled={status === "executing"}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+               <FormField
+              control={form.control}
+              name="isTwoFactorEnabled"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Two Factor Authentication</FormLabel>
+                  <FormDescription>
+                    Enable two factor authencation for your account
+                  </FormDescription>
+                  <FormControl>
+                  <Switch disabled={status === 'executing'} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormError />
+            <FormSuccess />
+            <Button type="submit" disabled={status === 'executing' || avatarUploading}>Update your settings</Button>
           </form>
         </Form>
       </CardContent>
