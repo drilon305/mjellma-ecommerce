@@ -1,16 +1,15 @@
-import NextAuth, { type DefaultSession } from 'next-auth'
+import NextAuth, { type DefaultSession } from "next-auth"
 
-
-export type ExtendUser = DefaultSession['user'] & {
-    id: string,
-    role: string,
-    isTwoFactorEnabled: boolean,
-    isOAuth: boolean,
-    image: string
+export type ExtendUser = DefaultSession["user"] & {
+  id: string
+  role: string
+  isTwoFactorEnabled: boolean
+  isOAuth: boolean
+  image: string
 }
 
-declare module 'next-auth' {
-    interface Session {
-        user: ExtendUser
-    }
+declare module "next-auth" {
+  interface Session {
+    user: ExtendUser
+  }
 }
