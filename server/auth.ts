@@ -3,7 +3,6 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { db } from "@/server"
 import Google from "next-auth/providers/google"
 import Credentials from 'next-auth/providers/credentials'
-import credentials from "next-auth/providers/credentials"
 import { LoginSchema } from "@/types/login-schema"
 import { eq } from "drizzle-orm"
 import { accounts, users } from "./schema"
@@ -14,19 +13,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     session: {strategy: 'jwt'},
     secret: process.env.AUTH_SECRET,
     callbacks: {
-        async session({session, token}) {
-            if(session && token.sub) {
-                session.user.id = token.sub
+        async session({ session, token }) {
+            if (session && token.sub) {
+              session.user.id = token.sub
             }
-            if(session.user && session.role) {
-                session.user.role = token.role as string
+            if (session.user && token.role) {
+              session.user.role = token.role as string
             }
-            if(session.user) {
-                session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean
-                session.user.name = token.name 
-                session.user.email = token.email as string
-                session.user.image = token.image as string
-                session.user.isOAuth = token.isOAuth as boolean
+            if (session.user) {
+              session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean
+              session.user.name = token.name
+              session.user.email = token.email as string
+              session.user.isOAuth = token.isOAuth as boolean
+              session.user.image = token.image as string
             }
             return session
         },
