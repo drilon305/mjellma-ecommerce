@@ -16,9 +16,12 @@ export const settings = action(SettingsSchema, async(values) => {
     if(!user) {
         return { error: 'User not found'}
     }
+    
     const dbUser = await db.query.users.findFirst({
-        where: eq(users.id, user.user.id)
-    })
+        where: eq(users.id, user.user.id),
+      })
+
+
     if(!dbUser) {
         return { error: 'User not found'}
     }
