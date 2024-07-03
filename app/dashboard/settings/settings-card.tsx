@@ -69,7 +69,6 @@ export default function SettingsCard(session: SettingsForm) {
 
 
    const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
-    console.log(values)
     execute(values)
    }
 
@@ -178,7 +177,7 @@ export default function SettingsCard(session: SettingsForm) {
                     Enable two factor authencation for your account
                   </FormDescription>
                   <FormControl>
-                  <Switch disabled={status === 'executing' || session.session.user.isOAuth === true} />
+                  <Switch disabled={status === 'executing' || session.session.user.isOAuth === true} checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

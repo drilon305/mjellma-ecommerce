@@ -92,11 +92,11 @@ export const LoginForm = () => {
               />
               <FormSuccess message={success} />
               <FormError message={error} />
-              <Button size={"sm"} variant={"link"} asChild>
+              <Button size={"sm"} className="px-0" variant={"link"} asChild>
                 <Link href="/auth/reset">Forgot your password</Link>
               </Button>
             </div>
-            <Button type="submit" className={cn('w-full', status === 'executing' ? 'animate-pulse' : '')}>
+            <Button type="submit" className={cn('w-full my-4', status === 'executing' ? 'animate-pulse' : '')}>
               {"Login"}
             </Button>
           </form>

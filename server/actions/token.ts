@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm"
 import { db } from ".."
-import { emailTokens, passwordResetTokens, users } from "../schema"
+import { emailTokens, passwordResetTokens, twoFactorTokens, users } from "../schema"
 
 
 export const getVerificationTokenByEmail = async (email: string) => {
@@ -83,7 +83,32 @@ export const newVerification = async (token: string) => {
     } catch (error) {
             return null
     }
-  }
+}
+    
+    export const getTwoFactorTokenByEmail = async (email: string) => {
+        try {
+            const twoFactorToken = await db.query.twoFactorTokens.findFirst({
+                where: eq(twoFactorTokens.email, email)
+            })
+    
+            return twoFactorToken
+    
+        } catch (error) {
+                return null
+        }
+      }
+
+      export const getTwoFactorTokenByToken = async (token: string) => {
+        try {
+            const twoFactorToken = await db.query.twoFactorTokens.findFirst({
+                where: eq(twoFactorTokens.token, token)
+            })
+            return twoFactorToken
+    
+        } catch (error) {
+            return null
+        }
+      }
 
   export const generatePasswordResetToken = async (email: string) => {
    try {
