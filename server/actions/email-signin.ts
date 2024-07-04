@@ -5,8 +5,8 @@ import { createSafeActionClient } from "next-safe-action";
 import { db } from "..";
 import { eq } from "drizzle-orm";
 import { twoFactorTokens, users } from "../schema";
-import { generateEmailVerificationToken, getTwoFactorTokenByEmail } from "./token";
-import { sendVerificationEmail } from "./email";
+import { generateEmailVerificationToken, generateTwoFactorToken, getTwoFactorTokenByEmail } from "./token";
+import { sendTwoFactorTokenByEmail, sendVerificationEmail } from "./email";
 import { signIn } from "../auth";
 import { AuthError } from "next-auth";
 
@@ -49,6 +49,12 @@ export const emailSignIn = action(LoginSchema, async ({email, password, code}) =
 
             await db.delete(twoFactorTokens).where(eq(twoFactorTokens.id, twoFactorToken.id))
 
+            const token = await generateTwoFactorToken(existingUser.email)
+            if(!token) {
+                return { error: 'Token not generated!'}
+            }
+                await sendTwoFactorTokenByEmail(token[0].email, token[0].token)
+                return { success: 'Two Factor Token Sent!'}
          }
         }
     
