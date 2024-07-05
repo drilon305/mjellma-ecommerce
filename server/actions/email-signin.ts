@@ -49,12 +49,13 @@ export const emailSignIn = action(LoginSchema, async ({email, password, code}) =
 
             await db.delete(twoFactorTokens).where(eq(twoFactorTokens.id, twoFactorToken.id))
 
+         } else {
             const token = await generateTwoFactorToken(existingUser.email)
             if(!token) {
                 return { error: 'Token not generated!'}
             }
                 await sendTwoFactorTokenByEmail(token[0].email, token[0].token)
-                return { success: 'Two Factor Token Sent!'}
+                return { twoFactor: 'Two Factor Token Sent!'}
          }
         }
     

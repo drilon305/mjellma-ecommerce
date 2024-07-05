@@ -147,7 +147,7 @@ export const newVerification = async (token: string) => {
          await db.delete(twoFactorTokens).where(eq(twoFactorTokens.id, existingToken.id))
      }
  
-     const twoFactorToken = await db.insert(passwordResetTokens).values({
+     const twoFactorToken = await db.insert(twoFactorTokens).values({
          email,
          token,
          expires
