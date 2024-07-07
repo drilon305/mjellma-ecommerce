@@ -31,6 +31,7 @@ import { FormSuccess } from "@/components/auth/form-success"
 import { useState } from "react"
 import { useAction } from "next-safe-action/hooks"
 import { settings } from "@/server/actions/settings"
+import { UploadButton } from "@/app/api/uploadthing/upload"
   
 type SettingsForm = {
     session: Session
@@ -119,6 +120,32 @@ export default function SettingsCard(session: SettingsForm) {
                         alt="User Image"
                       />
                     )}
+                    <UploadButton
+                      className="scale-75 ut-button:ring-primary  ut-label:bg-red-50  ut-button:bg-primary/75  hover:ut-button:bg-primary/100 ut:button:transition-all ut-button:duration-500  ut-label:hidden ut-allowed-content:hidden"
+                      endpoint="avatarUploader"
+                      onUploadBegin={() => {
+                        setAvatarUploading(true);
+                      }}
+                      onUploadError={(error) => {
+                        form.setError('image', {
+                          type: 'validate',
+                          message: error.message,
+                        })
+                        setAvatarUploading(false);
+                        return
+                      }}
+                      onClientUploadComplete={(res) => {
+                        form.setValue('image', res[0].url!)
+                        setAvatarUploading(false);
+                        return
+                      }}
+                      content={{
+                        button({ ready }) {
+                          if (ready) return <div>Change Avatar</div>;
+                          return <div>Uploading...</div>;
+                        },
+                      }}
+                    />
                   </div>
                   <FormControl>
                     <Input
@@ -128,12 +155,12 @@ export default function SettingsCard(session: SettingsForm) {
                       {...field}
                     />
                   </FormControl>
-                 
+
                   <FormMessage />
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
@@ -142,7 +169,9 @@ export default function SettingsCard(session: SettingsForm) {
                   <FormControl>
                     <Input
                       placeholder="********"
-                      disabled={status === "executing" || session?.session.user.isOAuth}
+                      disabled={
+                        status === "executing" || session?.session.user.isOAuth
+                      }
                       {...field}
                     />
                   </FormControl>
@@ -150,7 +179,7 @@ export default function SettingsCard(session: SettingsForm) {
                 </FormItem>
               )}
             />
-              <FormField
+            <FormField
               control={form.control}
               name="newPassword"
               render={({ field }) => (
@@ -159,7 +188,9 @@ export default function SettingsCard(session: SettingsForm) {
                   <FormControl>
                     <Input
                       placeholder="********"
-                      disabled={status === "executing" || session?.session.user.isOAuth}
+                      disabled={
+                        status === "executing" || session?.session.user.isOAuth
+                      }
                       {...field}
                     />
                   </FormControl>
@@ -167,7 +198,7 @@ export default function SettingsCard(session: SettingsForm) {
                 </FormItem>
               )}
             />
-               <FormField
+            <FormField
               control={form.control}
               name="isTwoFactorEnabled"
               render={({ field }) => (
@@ -177,7 +208,14 @@ export default function SettingsCard(session: SettingsForm) {
                     Enable two factor authencation for your account
                   </FormDescription>
                   <FormControl>
-                  <Switch disabled={status === 'executing' || session.session.user.isOAuth === true} checked={field.value} onCheckedChange={field.onChange} />
+                    <Switch
+                      disabled={
+                        status === "executing" ||
+                        session.session.user.isOAuth === true
+                      }
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -185,7 +223,12 @@ export default function SettingsCard(session: SettingsForm) {
             />
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button type="submit" disabled={status === 'executing' || avatarUploading}>Update your settings</Button>
+            <Button
+              type="submit"
+              disabled={status === "executing" || avatarUploading}
+            >
+              Update your settings
+            </Button>
           </form>
         </Form>
       </CardContent>
