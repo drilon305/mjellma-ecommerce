@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -12,23 +12,33 @@ export default function DashboardNav({allLinks}: { allLinks: { label: string; pa
     const pathname = usePathname()
 
     return (
-        <nav className="py-2 overflow-auto">
-          <ul className="flex gap-6 text-sm font-bold">
-            {allLinks.map((link) => (
-              <li key={link.path}>
-                <Link className={cn('flex gap-1 flex-col items-center', pathname === link.path ? (
-                    <motion.div className="h-[3px] w-full rounded-full absolute bg-primary z-0 l-0 -bottom-1">
-
-                    </motion.div>
-                ) : null
-            
-            )} href={link.path}>
+      <nav className="py-2 overflow-auto">
+        <ul className="flex gap-6 text-xs font-bold">
+            <AnimatePresence>
+          {allLinks.map((link) => (
+            <motion.li whileTap={{ scale: 0.95 }} key={link.path}>
+              <Link
+                className={cn(
+                  "flex gap-1 flex-col items-center relative",
+                  pathname === link.path && "text-primary"
+                )}
+                href={link.path}
+              >
                 {link.icon}
                 {link.label}
+                {pathname === link.path ? (
+                  <motion.div
+                    className="h-[3px] w-full rounded-full absolute bg-primary z-0 l-0 -bottom-1"
+                    initial={{ scale: 0.5 }}
+                    animate={{ scale: 1 }}
+                    layoutId="underline"
+                  />
+                ) : null}
               </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-    )
+            </motion.li>
+          ))}
+          </AnimatePresence>
+        </ul>
+      </nav>
+    );
 }
