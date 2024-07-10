@@ -21,6 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { DollarSign } from "lucide-react"
   
 
 export default function ProductForm(){
@@ -46,7 +47,7 @@ export default function ProductForm(){
           control={form.control}
           name="title"
           render={({ field }) => (
-            <FormItem className="py-2">
+            <FormItem>
               <FormLabel>Product Title</FormLabel>
               <FormControl>
                 <Input placeholder="Bamboo glass water" {...field} />
@@ -55,13 +56,39 @@ export default function ProductForm(){
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                {/* <Input placeholder="Bamboo glass water" {...field} /> */}
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Product Price</FormLabel>
+              <FormControl>
+                <div className="flex items-center gap-2">
+                    <DollarSign size={36} className="p-2  bg-muted rounded-md" />
+                    <Input {...field} type="number" placeholder="Your price in USD" step='0.1' min={0} />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button className="w-full" type="submit">Submit</Button>
       </form>
     </Form>
     </CardContent>
-    <CardFooter>
-      <p>Card Footer</p>
-    </CardFooter>
   </Card>
   
    )
