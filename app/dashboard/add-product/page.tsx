@@ -1,7 +1,16 @@
+import { auth } from "@/server/auth"
+import { redirect } from "next/navigation";
+import { useForm } from "react-hook-form";
+import ProductForm from "./product-form";
 
 
-export default function AddProduct() {
+export default async function AddProduct() {
+    const session = await auth();
+    if(session?.user.role !== 'admin') return redirect('/dashboard/settings')
+
+       
+
     return (
-        <h1>Add product</h1>
+        <ProductForm />
     )
 }
