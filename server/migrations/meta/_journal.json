@@ -64,6 +64,13 @@
       "when": 1720032394068,
       "tag": "0008_peaceful_klaw",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1720650510322,
+      "tag": "0009_nasty_princess_powerful",
+      "breakpoints": true
     }
   ]
 }
