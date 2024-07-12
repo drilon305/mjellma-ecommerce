@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { DollarSign } from "lucide-react"
+import Tiptap from "./tiptap"
   
 
 export default function ProductForm(){
@@ -63,7 +64,7 @@ export default function ProductForm(){
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                {/* <Input placeholder="Bamboo glass water" {...field} /> */}
+                <Tiptap val={field.value} />
               </FormControl>
               <FormMessage />
             </FormItem>
