@@ -27,6 +27,8 @@ export const createProduct = action(
         const newProduct = await db.insert(products).values({description, price, title}).returning()
         return { success: `Product ${newProduct[0].title} has been created` };
       }
-    } catch (error) {}
+    } catch (error) {
+        return { error: JSON.stringify(error)}
+    }
   }
 );
