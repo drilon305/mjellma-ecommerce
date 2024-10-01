@@ -1,6 +1,7 @@
 import { db } from "@/server"
 import placeholder from '@/public/placeholder.svg'
 import { DataTable } from "./data-table"
+import { columns } from "./columns"
 
 export default async function Products() {
   const products = await db.query.products.findMany({
@@ -21,5 +22,6 @@ export default async function Products() {
 
     if(!dataTable) throw new Error('No data found')
   return (
-    <DataTable columns={} data={dataTable} />
+    <DataTable columns={columns} data={dataTable} />
+  )
 }
