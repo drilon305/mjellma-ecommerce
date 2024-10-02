@@ -1,6 +1,6 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, Row } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -13,6 +13,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Image from "next/image"
+import { useAction } from "next-safe-action/hooks"
+import { deleteProduct } from "@/server/actions/delete-product"
+import { toast } from "sonner"
+import Link from "next/link"
 
 
 type ProductColumn = {
@@ -22,6 +26,52 @@ type ProductColumn = {
     variants: any;
     id: number;
 }
+
+async function deleteProductWrapper(id: number) {
+    const { data } = await deleteProduct({ id })
+    if(!data) {
+        return new Error('No data found')
+    }
+    if (data?.success) {
+        toast.success(data.success);
+    }
+    if (data?.error) {
+        toast.error(data.error);
+    }
+ }
+
+ const ActionCell = ({ row }: {row: Row<ProductColumn>}) => {
+    const { execute, status } = useAction(deleteProduct, {
+        onSuccess: (data) => {
+            if(data?.error) toast.error(data.error)
+            if(data?.success) toast.success(data.success)
+        },
+        onExecute: () => {
+            toast.loading('Deleting Product')
+        },
+    })
+
+    const product = row.original;
+
+    return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={"ghost"} className="w-8 h-8 p-0">
+              <MoreHorizontal className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem className="dark:focus:bg-primary focus:bg-primary/50 cursor-pointer">
+              <Link href={`/dashboard/add-product?id=${product.id}`} >Edit Product</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => execute({id: product.id})} className="dark:focus:bg-destructive focus:bg-destructive/50 cursor-pointer">
+              Delete Product
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+ }
+
 
 export const columns: ColumnDef<ProductColumn>[] = [
   {
@@ -70,20 +120,6 @@ export const columns: ColumnDef<ProductColumn>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => {
-      const product = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant={'ghost'} className="w-8 h-8 p-0">
-                <MoreHorizontal className="w-4 h-4" /></Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem className="dark:focus:bg-primary focus:bg-primary/50 cursor-pointer">Edit Product</DropdownMenuItem>
-            <DropdownMenuItem className="dark:focus:bg-destructive focus:bg-destructive/50 cursor-pointer">Delete Product</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ActionCell,
   },
 ];
