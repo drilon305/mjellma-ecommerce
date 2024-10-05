@@ -26,8 +26,10 @@ import Tiptap from "./tiptap"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAction } from "next-safe-action/hooks"
 import { createProduct } from "@/server/actions/create-product"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from 'sonner'  
+import { getProduct } from "@/server/actions/get-product"
+import { useEffect } from "react"
 
 
 export default function ProductForm(){
@@ -43,6 +45,31 @@ export default function ProductForm(){
     })
 
     const router = useRouter()
+    const searchParams = useSearchParams();
+    const editMode = searchParams.get('id');
+
+    const checkProduct = async (id: number) => {
+      if(editMode) {
+        const data = await getProduct(id)
+        if(data.error) {
+          toast.error(data.error)
+          router.push('/dashboard/products')
+          return
+        }
+        if(data.success) {
+          const id = parseInt(editMode)
+          form.setValue('title', data.success.title)
+          form.setValue('description', data.success.description)
+          form.setValue('price', data.success.price)
+          form.setValue('id', id)
+
+        }
+      }
+    }
+
+    useEffect(() => {
+        checkProduct(parseInt(editMode))
+    }, [editMode])
 
     const {execute, status } = useAction(createProduct, {
         onSuccess: (data) => {
@@ -55,7 +82,12 @@ export default function ProductForm(){
             }
         },
         onExecute: (data) => {
-            toast.loading('Creating Product')
+            if(editMode) {
+              toast.loading('Editing Product')
+            }
+            if(!editMode) {
+              toast.loading('Creating Product')
+            }
         },
     })
 
@@ -66,8 +98,8 @@ async function onSubmit(values: zProductSchema) {
    return (
     <Card>
     <CardHeader>
-      <CardTitle>Card Title</CardTitle>
-      <CardDescription>Card Description</CardDescription>
+      <CardTitle>{editMode ?  'Edit Product' : 'Create Product'}</CardTitle>
+      <CardDescription>{editMode ? 'Make changes to existing product' : 'Add a brand new product'}</CardDescription>
     </CardHeader>
     <CardContent>
     <Form {...form}>
@@ -114,7 +146,9 @@ async function onSubmit(values: zProductSchema) {
             </FormItem>
           )}
         />
-        <Button className="w-full" disabled={status === 'executing' || !form.formState.isValid || !form.formState.isDirty} type="submit">Submit</Button>
+        <Button className="w-full" disabled={status === 'executing' || !form.formState.isValid || !form.formState.isDirty} type="submit">
+          {editMode ? 'Save Changes' : 'Create Product'}
+        </Button>
       </form>
     </Form>
     </CardContent>
