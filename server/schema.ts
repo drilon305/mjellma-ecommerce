@@ -142,3 +142,22 @@ export const productVariantsRelations = relations(productVariants, ({many, one})
 })
 ) 
 
+export const variantImagesRelations = relations(variantImages, ({
+  one }) => ({
+    productVariants: one(productVariants, {
+      fields: [variantImages.variantID],
+      references: [productVariants.id],
+      relationName: 'variantImages'
+    }),
+  })
+)
+
+export const variantTagsRelations = relations(variantTags, ({
+  one }) => ({
+    productVariants: one(productVariants, {
+      fields: [variantTags.variantID],
+      references: [productVariants.id],
+      relationName: 'variantTags'
+    }),
+  })
+)
