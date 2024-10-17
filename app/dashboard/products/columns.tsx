@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef, Row } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, PlusCircle, PlusCircleIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -17,13 +17,22 @@ import { useAction } from "next-safe-action/hooks"
 import { deleteProduct } from "@/server/actions/delete-product"
 import { toast } from "sonner"
 import Link from "next/link"
+import { VariantsWithImagesTags } from "@/lib/infer-type"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import ProductVariant from "./product-variant"
+
 
 
 type ProductColumn = {
     title: string;
     price: number;
     image: string;
-    variants: any;
+    variants: VariantsWithImagesTags[]
     id: number;
 }
 
@@ -85,6 +94,39 @@ export const columns: ColumnDef<ProductColumn>[] = [
   {
     accessorKey: "variants",
     header: "Variants",
+    cell: ({ row }) => {
+      const variants = row.getValue("variants") as VariantsWithImagesTags[];
+      return (
+        <div>
+          {variants.map((variant) => (
+            <div key={variant.id}>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <ProductVariant />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{variant.productType}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          ))}
+          <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <span className="text-primary">
+                    <PlusCircle className="w-4 h-4" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Create a new variant</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "price",
