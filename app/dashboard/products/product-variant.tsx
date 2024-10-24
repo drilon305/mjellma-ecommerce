@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { VariantSchema } from "@/types/variant-schema";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { InputTags } from "./input-tags";
   
 
 export default function ProductVariant({
@@ -94,19 +95,19 @@ export default function ProductVariant({
             </FormItem>
           )}
         />
-        {/* <FormField
+        <FormField
           control={form.control}
           name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Variant Tags</FormLabel>
+              <FormLabel>Tags</FormLabel>
               <FormControl>
-               <InputTags />
+               <InputTags {...field} onChange={(e) => field.onChange(e)} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
         {editMode && variant && (
             <Button type="button" onClick={(e) => e.preventDefault()}>
                 Delete Variant
