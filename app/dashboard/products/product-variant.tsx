@@ -25,6 +25,7 @@ import { VariantSchema } from "@/types/variant-schema";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InputTags } from "./input-tags";
+import VariantImages from "./variant-images";
   
 
 export default function ProductVariant({
@@ -108,6 +109,7 @@ export default function ProductVariant({
             </FormItem>
           )}
         />
+        <VariantImages />
         {editMode && variant && (
             <Button type="button" onClick={(e) => e.preventDefault()}>
                 Delete Variant
