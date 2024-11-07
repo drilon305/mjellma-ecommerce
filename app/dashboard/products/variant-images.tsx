@@ -12,6 +12,7 @@ import {
     FormLabel,
     FormMessage,
   } from "@/components/ui/form"
+  import { cn } from "@/lib/utils"
 import { UploadDropzone } from "@/app/api/uploadthing/upload"
 import {
     Table,
@@ -25,7 +26,8 @@ import {
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { TrashIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { Reorder } from "framer-motion"
+import { useState } from "react"
 
 
 export default function VariantImages() {
@@ -36,6 +38,8 @@ export default function VariantImages() {
     control,
     name: "variantImages",
   });
+
+const [active, setActive] = useState(0)
 
   return (
     <div>
@@ -102,10 +106,20 @@ export default function VariantImages() {
       <TableHead>Actions</TableHead>
     </TableRow>
   </TableHeader>
-  <TableBody>
+  <Reorder.Group as='tbody' values={fields} onReorder={(e) => {
+    const activeElement = fields[active]
+   e.map((item, index) => {
+    if(item === activeElement) {
+      move(active, index)
+      setActive(index)
+      return
+    }
+    return
+   })
+  }}>
    {fields.map((field, index) => {
     return (
-      <TableRow
+      <Reorder.Item as="tr" key={field.id} id={field.id} value={field} onDragStart={() => setActive(index)}
         className={
           cn(
             field.url.search("blob:") === 0
@@ -129,10 +143,10 @@ export default function VariantImages() {
         <TrashIcon className="h-4" />
           </Button>
         </TableCell>
-      </TableRow>
+      </Reorder.Item>
     );
    })}
-  </TableBody>
+  </Reorder.Group>
 </Table>
       </div>
     </div>
