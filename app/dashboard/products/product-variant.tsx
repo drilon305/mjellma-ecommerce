@@ -28,7 +28,7 @@ import { InputTags } from "./input-tags";
 import VariantImages from "./variant-images";
   
 
-export default function ProductVariant({
+export const ProductVariant = ({
   editMode,
   productID,
   variant,
@@ -38,7 +38,7 @@ export default function ProductVariant({
   productID: number;
   variant?: VariantsWithImagesTags;
   children: React.ReactNode;
-}) {
+}) => {
 
     const form = useForm<z.infer<typeof VariantSchema>>({
         resolver: zodResolver(VariantSchema),
@@ -61,7 +61,7 @@ export default function ProductVariant({
   return (
     <Dialog>
     <DialogTrigger>{children}</DialogTrigger>
-    <DialogContent>
+    <DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-[860px] rounded-md">
       <DialogHeader>
         <DialogTitle>{editMode ? 'Edit' : 'Create'} your variant</DialogTitle>
         <DialogDescription>
