@@ -2,11 +2,12 @@
 
 import {
   ColumnDef,
+  ColumnFiltersState,
+  SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  SortingState,
   useReactTable,
 } from "@tanstack/react-table"
 import {
@@ -17,7 +18,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
 import {
   Table,
   TableBody,
@@ -29,7 +29,7 @@ import {
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { ChevronRightIcon, ChevronsLeftIcon } from "lucide-react"
+import { ChevronLeftIcon, ChevronRight, ChevronRightIcon } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -40,10 +40,8 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-
   const table = useReactTable({
     data,
     columns,
@@ -54,9 +52,8 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
-    }
+    },
   })
-
 
   return (
     <div className="rounded-md border">
@@ -64,7 +61,7 @@ export function DataTable<TData, TValue>({
         <CardHeader>
           <CardTitle>Your Products</CardTitle>
           <CardDescription>
-            Update, delete and edit your products
+            Update, delete and edit your products 💯
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -80,7 +77,6 @@ export function DataTable<TData, TValue>({
                 }
               />
             </div>
-
             <Table>
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -95,7 +91,7 @@ export function DataTable<TData, TValue>({
                                 header.getContext()
                               )}
                         </TableHead>
-                      );
+                      )
                     })}
                   </TableRow>
                 ))}
@@ -135,21 +131,21 @@ export function DataTable<TData, TValue>({
                 onClick={() => table.previousPage()}
                 variant="outline"
               >
-                <ChevronsLeftIcon className="w-4 h-4" />
-                <span>Go to previous page</span>
+                <ChevronLeftIcon className="w-4 h-4" />
+                <span>Previous Page</span>
               </Button>
               <Button
                 disabled={!table.getCanNextPage()}
                 onClick={() => table.nextPage()}
                 variant="outline"
               >
+                <span>Next page</span>
                 <ChevronRightIcon className="w-4 h-4" />
-                <span>Go to the next page</span>
               </Button>
             </div>
           </div>
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
