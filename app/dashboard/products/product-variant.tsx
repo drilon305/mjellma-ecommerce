@@ -117,8 +117,6 @@ export const ProductVariant = forwardRef<HTMLDivElement, VariantProps>(
     })
 
     function onSubmit(values: z.infer<typeof VariantSchema>) {
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
 
       execute(values)
     }
@@ -126,7 +124,7 @@ export const ProductVariant = forwardRef<HTMLDivElement, VariantProps>(
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>{children}</DialogTrigger>
-        <DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-[860px]">
+        <DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-[600px]">
           <DialogHeader>
             <DialogTitle>
               {editMode ? "Edit" : "Create"} your variant
