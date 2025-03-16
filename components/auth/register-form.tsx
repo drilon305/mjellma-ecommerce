@@ -47,7 +47,7 @@ export const RegisterForm = () => {
   
     return (
       <AuthCard
-        cardTitle="Create an account 🎉"
+        cardTitle="Create an account"
         backButtonHref="/auth/login"
         backButtonLabel="Already have an account? Login here."
         showSocial

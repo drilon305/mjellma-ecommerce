@@ -61,7 +61,7 @@ export function DataTable<TData, TValue>({
         <CardHeader>
           <CardTitle>Your Products</CardTitle>
           <CardDescription>
-            Update, delete and edit your products 💯
+            Update, delete and edit your products
           </CardDescription>
         </CardHeader>
         <CardContent>
