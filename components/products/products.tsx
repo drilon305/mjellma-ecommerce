@@ -16,9 +16,11 @@ export default function Products({ variants }: ProductTypes) {
     <main className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
       {variants.map((variant) => (
         <Link
-        className="py-2"
+          className="py-2"
           key={variant.id}
-          href={`/products/${variant.id}?id=${variant.id}&productID=${variant.productID}&price=${variant.product.price}&title=${variant.product.title}&type=${variant.productType}&image=${variant.variantImages[0].url}`}
+          href={`/products/${variant.id}?id=${variant.id}&
+          productID=${variant.productID}&price=${variant.product.price}&
+          title=${variant.product.title}&type=${variant.productType}&image=${variant.variantImages[0].url}`}
         >
           <Image
             className="rounded-md pb-2"
@@ -35,8 +37,8 @@ export default function Products({ variants }: ProductTypes) {
                 {variant.productType}
               </p>
             </div>
-            <Badge className="text-sm" variant={'secondary'}>
-            {formatPrice(variant.product.price)}
+            <Badge className="text-sm" variant={"secondary"}>
+              {formatPrice(variant.product.price)}
             </Badge>
           </div>
         </Link>
